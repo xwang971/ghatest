@@ -57,4 +57,4 @@ jobs:
             echo "Installing containerapp extension"
             az extension add --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.1.6-py2.py3-none-any.whl --yes
             echo "Starting Deploying"
-            az containerapp update -n myapp -g workerapps-rg-xj -i xwang971reg.azurecr.io/myapp:${{ github.sha }} --registry-login-server xwang971reg.azurecr.io --registry-username  ${{ secrets.REGISTRY_USERNAME }} --registry-password ${{ secrets.REGISTRY_PASSWORD }}
+            az containerapp update -n myapp -g workerapps-rg-xj
