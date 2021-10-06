@@ -1,0 +1,49 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-08-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "defaultValue": "North Central US (Stage)",
+            "type": "String"
+        },
+        "environment_id": {
+            "defaultValue": "",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+    {
+        "name": "storeapp",
+        "type": "Microsoft.Web/workerApps",
+        "apiVersion": "2021-02-01",
+        "kind": "workerapp",
+        "location": "[parameters('location')]",
+        "properties": {
+            "kubeEnvironmentId": "[parameters('environment_id')]",
+            "configuration": {
+                "ingress": {
+                    "external": true,
+                    "targetPort": 3000
+                }
+            },
+            "template": {
+                "containers": [
+                    {
+                        "image": "vturecek/storeapp:v1",
+                        "name": "storeapp"
+                    }
+                ],
+                "scale": {
+                    "minReplicas": 1,
+                    "maxReplicas": 1,
+                    "rules": []
+                },
+                "dapr": {
+                    "enabled": "true",
+                    "appPort": 3000
+                }
+            }
+        }
+    }]
+}

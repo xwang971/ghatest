@@ -1,0 +1,159 @@
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+    <title>MyQueueStore</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/album/">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <!-- Bootstrap core CSS -->
+    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/030d00644a.js" crossorigin="anonymous"></script>
+    <script>
+       (function poll() {
+       setTimeout(function() {
+            $.ajax({
+                url: "/api/store",
+                type: "GET",
+                success: function(data) {
+                    console.log("item1 "+data.item1);
+                    console.log("item2 "+data.item1);
+                    console.log("item3 "+data.item1);
+                    if(parseInt(data.item1) > 0) {
+                        $("#sanitize").html("<b>"+data.item1+"</b> Available")
+                        $("#sanitize-btn").show()
+                    } else {
+                        $("#sanitize").html("<b>Out of stock!</b> Waiting for new Inventory <i class=\"fas fa-truck\"></i>")
+                        $("#sanitize-btn").hide()
+                    }
+
+                    if(parseInt(data.item2) > 0) {
+                        $("#mask").html("<b>"+data.item2+"</b> Available")
+                        $("#mask-btn").show()
+                    } else {
+                        $("#mask").html("<b>Out of stock!</b> Waiting for new Inventory <i class=\"fas fa-truck\"></i>")
+                        $("#mask-btn").hide()
+                    }
+
+                    if(parseInt(data.item3) > 0) {
+                        $("#disinfectant").html("<b>"+data.item3+"</b> Available")
+                        $("#disinfectant-btn").show()
+                    } else {
+                        $("#disinfectant").html("<b>Out of stock!</b> Waiting for new Inventory <i class=\"fas fa-truck\"></i>")
+                        $("#disinfectant-btn").hide()
+                    }
+                },
+                dataType: "json",
+                complete: poll,
+                timeout: 2000
+            })
+        }, 1000);
+    })(); 
+    </script>
+  </head>
+
+  <body data-new-gr-c-s-check-loaded="14.1024.0" data-gr-ext-installed="">
+
+    <header>
+      <div class="collapse bg-dark" id="navbarHeader">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-8 col-md-7 py-4">
+              <h4 class="text-white">About</h4>
+              <p class="text-muted">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.</p>
+            </div>
+            <div class="col-sm-4 offset-md-1 py-4">
+              <h4 class="text-white">Contact</h4>
+              <ul class="list-unstyled">
+                <li><a href="#" class="text-white">Follow on Twitter</a></li>
+                <li><a href="#" class="text-white">Like on Facebook</a></li>
+                <li><a href="#" class="text-white">Email us</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container d-flex justify-content-between" style="font-family: 'Dancing Script', cursive;font-size: 150%">
+          <a href="#" class="navbar-brand d-flex align-items-center">
+            <h1>MyQueueStore</h1>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main role="main">
+
+      <section class="jumbotron text-center">
+        <div class="container">
+          <p class="lead text-muted"></p>
+        </div>
+      </section>
+
+      <div class="album py-5 bg-light">
+        <div class="container">
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" src="/images/sanitize.png" data-holder-rendered="true" style="height: 225px; width: 100%; display: block;">
+                <div class="card-body">
+                  <p class="card-text"><b>Hand Sanitizer</b></p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <button type="button" id="sanitize-btn" class="btn btn-sm btn-success btn-outline-secondary" style="color: white"><i class="fas fa-shopping-cart"></i> Buy</button>
+                    </div>
+                    <small class="text-muted" id="sanitize"></small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" src="/images/facemask.png" data-holder-rendered="true" style="height: 225px; width: 100%; display: block;">
+                <div class="card-body">
+                  <p class="card-text"><b>Face Mask</b></p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <button type="button" id="mask-btn" class="btn btn-sm btn-success btn-outline-secondary" style="color: white"><i class="fas fa-shopping-cart"></i> Buy</button>
+                    </div>
+                    <small class="text-muted" id="mask"></small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" src="/images/disinfectant.png" data-holder-rendered="true" style="height: 225px; width: 100%; display: block;">
+                <div class="card-body">
+                  <p class="card-text"><b>Disinfectant Cleaner</b></p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <button type="button" id="disinfectant-btn" class="btn btn-sm btn-success btn-outline-secondary" style="color: white"><i class="fas fa-shopping-cart"></i> Buy</button>
+                    </div>
+                    <small class="text-muted" id="disinfectant"></small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <footer class="text-muted">
+      <div class="container">
+        <p>Developed by Azure WorkerApps Team</p>
+      </div>
+    </footer>
+<svg xmlns="http://www.w3.org/2000/svg" width="348" height="225" viewBox="0 0 348 225" preserveAspectRatio="none" style="display: none; visibility: hidden; position: absolute; top: -100%; left: -100%;"><defs><style type="text/css"></style></defs><text x="0" y="17" style="font-weight:bold;font-size:17pt;font-family:Arial, Helvetica, Open Sans, sans-serif">Thumbnail</text></svg></body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
