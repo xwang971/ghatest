@@ -19,16 +19,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine AS release
 EXPOSE 8080
 WORKDIR /app
 
-### create a user
-### dotnet needs a home directory
-RUN addgroup -S ngsa && \
-    adduser -S ngsa -G ngsa && \
-    mkdir -p /home/ngsa && \
-    chown -R ngsa:ngsa /home/ngsa
-
-### run as ngsa user
-USER ngsa
-
 ### copy the app
 COPY --from=build /app .
 
