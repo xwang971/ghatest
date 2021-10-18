@@ -26,7 +26,7 @@ jobs:
       - name: Log in to container registry
         uses: docker/login-action@v1
         with:
-          registry: xwang971reg.azurecr.io1
+          registry: xwang971reg.azurecr.io
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
@@ -34,7 +34,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: xwang971reg.azurecr.io1/myapp:${{ github.sha }}
+          tags: xwang971reg.azurecr.io/myapp:${{ github.sha }}
           file: ./Dockerfile
 
 
@@ -61,4 +61,4 @@ jobs:
             az provider register --namespace Microsoft.Web
             az extension add --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.1.6-py2.py3-none-any.whl --yes
             echo "Starting Deploying"
-            az containerapp update -n myapp -g workerapps-rg-xj -i xwang971reg.azurecr.io1/myapp:${{ github.sha }} --registry-login-server xwang971reg.azurecr.io1 --registry-username  ${{ secrets.REGISTRY_USERNAME }} --registry-password ${{ secrets.REGISTRY_PASSWORD }} --debug
+            az containerapp update -n myapp -g workerapps-rg-xj -i xwang971reg.azurecr.io/myapp:${{ github.sha }} --registry-login-server xwang971reg.azurecr.io --registry-username  ${{ secrets.REGISTRY_USERNAME }} --registry-password ${{ secrets.REGISTRY_PASSWORD }} --debug
