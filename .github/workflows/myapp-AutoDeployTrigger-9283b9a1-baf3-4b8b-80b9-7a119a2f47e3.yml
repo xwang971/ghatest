@@ -54,9 +54,6 @@ jobs:
           azcliversion: 2.20.0
           inlineScript: |
             echo "Installing containerapp extension"
-            az cloud register -n CloudWithCustomEndpoint --endpoint-active-directory https://login.microsoftonline.com/ --endpoint-active-directory-graph-resource-id https://graph.windows.net/ --endpoint-gallery https://gallery.azure.com --endpoint-management https://management.core.windows.net --endpoint-resource-manager https://brazilus.management.azure.com --suffix-storage-endpoint core.windows.net
-            az cloud set --name CloudWithCustomEndpoint
-            az login --service-principal -u ${{ secrets.AZURE_CLIENTID }} -p ${{ secrets.AZURE_CLIENTPASSWORD }} --tenant ${{ secrets.AZURE_TENANTID }}
             az provider register --namespace Microsoft.Web
             az extension add --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.1.6-py2.py3-none-any.whl --yes
             echo "Starting Deploying"
