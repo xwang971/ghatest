@@ -26,7 +26,6 @@ jobs:
       - name: Log in to container registry
         uses: docker/login-action@v1
         with:
-          registry: https://registry.hub.docker.com
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
@@ -56,6 +55,6 @@ jobs:
           inlineScript: |
             echo "Installing containerapp extension"
             az provider register --namespace Microsoft.Web
-            az extension add --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.1.9-py2.py3-none-any.whl --yes
+            az extension add --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.1.10-py2.py3-none-any.whl --yes
             echo "Starting Deploying"
             az containerapp update -n myapp -g workerapps-rg-xj -i 1078233028/myapp:${{ github.sha }}  --registry-username  ${{ secrets.REGISTRY_USERNAME }} --registry-password ${{ secrets.REGISTRY_PASSWORD }} --debug
