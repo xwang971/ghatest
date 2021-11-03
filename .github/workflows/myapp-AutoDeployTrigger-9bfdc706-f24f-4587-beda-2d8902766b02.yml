@@ -58,4 +58,4 @@ jobs:
             az provider register --namespace Microsoft.Web
             az extension add --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.1.11-py2.py3-none-any.whl --yes
             echo "Starting Deploying"
-            az containerapp update -n myapp -g workerapps-rg-xj -i 1078233028/myapp:${{ github.sha }}  --registry-username  ${{ secrets.REGISTRY_USERNAME }} --registry-password ${{ secrets.REGISTRY_PASSWORD }} --target-port 8080 --traffic-weight 50 --debug
+            az containerapp update -n myapp -g workerapps-rg-xj -i 1078233028/myapp:${{ github.sha }}  --registry-username  ${{ secrets.REGISTRY_USERNAME }} --registry-password ${{ secrets.REGISTRY_PASSWORD }} --target-port 8080 --traffic-weight 0 --debug
