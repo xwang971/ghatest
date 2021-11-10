@@ -18,7 +18,7 @@ jobs:
       - name: Checkout to the branch
         uses: actions/checkout@v2
         with:
-          path: master
+          ref: main
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -52,7 +52,6 @@ jobs:
       - name: Deploy to containerapp
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.30.0
           inlineScript: |
             echo "Installing containerapp extension"
             az provider register --namespace Microsoft.Web
