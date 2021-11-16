@@ -53,7 +53,6 @@ jobs:
         with:
           inlineScript: |
             echo "Installing containerapp extension"
-            az provider register --namespace Microsoft.Web
             az extension add --source https://workerappscliextension.blob.core.windows.net/azure-cli-extension/containerapp-0.2.0-py2.py3-none-any.whl --yes
             echo "Starting Deploying"
             az containerapp update -n pr-capps -g public-review -i xwang971reg.azurecr.io/pr-capps:${{ github.sha }} --registry-login-server xwang971reg.azurecr.io --registry-username  ${{ secrets.REGISTRY_USERNAME }} --registry-password ${{ secrets.REGISTRY_PASSWORD }} --debug
