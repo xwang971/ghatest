@@ -33,7 +33,8 @@ jobs:
         with:
           push: true
           tags: xwang971reg.azurecr.io/myapp:${{ github.sha }}
-          context: ./Dockerfile
+          context: .
+          file: ./Dockerfile
 
 
   deploy:
