@@ -56,5 +56,5 @@ jobs:
             echo "Installing containerapp extension"
             az extension add --source https://containerappcli.blob.core.windows.net/containerapp/containerapp-0.1.3-py2.py3-none-any.whl --yes
             echo "Starting Deploying"
-            az containerapp registry set -n sctest -g workerapps-rg-xj --server xwang971reg.azurecr.io --username  ${{ secrets.SCTEST_REGISTRY_USERNAME }} --password ${{ secrets.sctest_REGISTRY_PASSWORD }}
+            az containerapp registry set -n sctest -g workerapps-rg-xj --server xwang971reg.azurecr.io --username  ${{ secrets.SCTEST_REGISTRY_USERNAME }} --password ${{ secrets.SCTEST_REGISTRY_PASSWORD }}
             az containerapp update -n sctest -g workerapps-rg-xj --image testimage:${{ github.sha }}
