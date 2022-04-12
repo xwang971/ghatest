@@ -7,7 +7,7 @@ on:
     branches: 
       [ master ]
     paths:
-    - '**'
+    - './**'
 
   # Allow mannually trigger 
   workflow_dispatch:      
@@ -27,15 +27,16 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: xwang971reg.azurecr.io
-          username: ${{ secrets.sctest_REGISTRY_USERNAME }}
-          password: ${{ secrets.sctest_REGISTRY_PASSWORD }}
+          username: ${{ secrets.SCTEST_REGISTRY_USERNAME }}
+          password: ${{ secrets.SCTEST_REGISTRY_PASSWORD }}
 
       - name: Build and push container image to registry
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: xwang971reg.azurecr.io/testimage:${{ github.sha }}:${{ github.sha }}
-          context: ./Dockerfile
+          tags: xwang971reg.azurecr.io/testimage:${{ github.sha }}
+          file: .//Dockerfile
+          context: ./
 
 
   deploy:
@@ -46,7 +47,7 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.sctest_AZURE_CREDENTIALS }}
+          creds: ${{ secrets.SCTEST_AZURE_CREDENTIALS }}
 
 
       - name: Deploy to containerapp
@@ -54,7 +55,7 @@ jobs:
         with:
           inlineScript: |
             echo "Installing containerapp extension"
-            az extension add --source https://containerappcli.blob.core.windows.net/containerapp/containerapp-0.1.3-py2.py3-none-any.whl --yes
+            az config set extension.use_dynamic_install=yes_without_prompt
             echo "Starting Deploying"
-            az containerapp registry set -n sctest -g workerapps-rg-xj --server xwang971reg.azurecr.io --username  ${{ secrets.sctest_REGISTRY_USERNAME }} --password ${{ secrets.sctest_REGISTRY_PASSWORD }}
-            az containerapp update -n sctest -g workerapps-rg-xj --image xwang971reg.azurecr.io/testimage:${{ github.sha }}:${{ github.sha }}
+            az containerapp registry set -n sctest -g workerapps-rg-xj --server xwang971reg.azurecr.io --username  ${{ secrets.SCTEST_REGISTRY_USERNAME }} --password ${{ secrets.SCTEST_REGISTRY_PASSWORD }}
+            az containerapp update -n sctest -g workerapps-rg-xj --image xwang971reg.azurecr.io/testimage:${{ github.sha }}
