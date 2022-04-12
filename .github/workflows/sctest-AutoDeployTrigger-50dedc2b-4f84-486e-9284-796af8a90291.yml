@@ -7,7 +7,7 @@ on:
     branches: 
       [ master ]
     paths:
-    - 'deploy/**'
+    - './**'
 
   # Allow mannually trigger 
   workflow_dispatch:      
@@ -34,8 +34,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: xwang971reg.azurecr.io/sctest:${{ github.sha }}
-          context: ./
+          tags: testimage
+          context: ./Dockerfile
 
 
   deploy:
@@ -57,4 +57,4 @@ jobs:
             az extension add --source https://containerappcli.blob.core.windows.net/containerapp/containerapp-0.1.3-py2.py3-none-any.whl --yes
             echo "Starting Deploying"
             az containerapp registry set -n sctest -g workerapps-rg-xj --server xwang971reg.azurecr.io --username  ${{ secrets.REGISTRY_USERNAME }} --password ${{ secrets.REGISTRY_PASSWORD }} --debug
-            az containerapp update -n sctest -g workerapps-rg-xj --image xwang971reg.azurecr.io/sctest:${{ github.sha }}
+            az containerapp update -n sctest -g workerapps-rg-xj --image testimage
