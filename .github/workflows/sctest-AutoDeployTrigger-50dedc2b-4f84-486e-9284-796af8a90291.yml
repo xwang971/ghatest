@@ -7,7 +7,7 @@ on:
     branches: 
       [ master ]
     paths:
-    - './**'
+    - '**'
 
   # Allow mannually trigger 
   workflow_dispatch:      
@@ -27,14 +27,14 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: xwang971reg.azurecr.io
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
+          username: ${{ secrets.sctest_REGISTRY_USERNAME }}
+          password: ${{ secrets.sctest_REGISTRY_PASSWORD }}
 
       - name: Build and push container image to registry
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: testimage
+          tags: testimage:${{ github.sha }}
           context: ./Dockerfile
 
 
@@ -46,7 +46,7 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          creds: ${{ secrets.sctest_AZURE_CREDENTIALS }}
 
 
       - name: Deploy to containerapp
@@ -56,5 +56,5 @@ jobs:
             echo "Installing containerapp extension"
             az extension add --source https://containerappcli.blob.core.windows.net/containerapp/containerapp-0.1.3-py2.py3-none-any.whl --yes
             echo "Starting Deploying"
-            az containerapp registry set -n sctest -g workerapps-rg-xj --server xwang971reg.azurecr.io --username  ${{ secrets.REGISTRY_USERNAME }} --password ${{ secrets.REGISTRY_PASSWORD }} --debug
-            az containerapp update -n sctest -g workerapps-rg-xj --image testimage
+            az containerapp registry set -n sctest -g workerapps-rg-xj --server xwang971reg.azurecr.io --username  ${{ secrets.sctest_REGISTRY_USERNAME }} --password ${{ secrets.sctest_REGISTRY_PASSWORD }}
+            az containerapp update -n sctest -g workerapps-rg-xj --image testimage:${{ github.sha }}
