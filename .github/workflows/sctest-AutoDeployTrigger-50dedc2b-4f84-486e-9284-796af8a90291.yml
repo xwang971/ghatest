@@ -46,7 +46,7 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.sctest_AZURE_CREDENTIALS }}
+          creds: ${{ secrets.SCTEST_AZURE_CREDENTIALS }}
 
 
       - name: Deploy to containerapp
