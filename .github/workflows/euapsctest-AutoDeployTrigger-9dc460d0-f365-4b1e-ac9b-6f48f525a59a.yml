@@ -34,7 +34,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: xwang971reg.azurecr.io/testimage:${{ github.sha }}
+          tags: xwang971reg.azurecr.io/prodtestimage:${{ github.sha }}
           file: ./Dockerfile
           context: ./
 
@@ -58,4 +58,4 @@ jobs:
             az config set extension.use_dynamic_install=yes_without_prompt
             echo "Starting Deploying"
             az containerapp registry set -n euapsctest -g workerapps-rg-xj --server xwang971reg.azurecr.io --username  ${{ secrets.EUAPSCTEST_REGISTRY_USERNAME }} --password ${{ secrets.EUAPSCTEST_REGISTRY_PASSWORD }}
-            az containerapp update -n euapsctest -g workerapps-rg-xj --image xwang971reg.azurecr.io/testimage:${{ github.sha }}
+            az containerapp update -n euapsctest -g workerapps-rg-xj --image xwang971reg.azurecr.io/prodtestimage:${{ github.sha }}
