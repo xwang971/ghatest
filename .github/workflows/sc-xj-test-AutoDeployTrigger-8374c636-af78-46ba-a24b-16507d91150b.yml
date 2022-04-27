@@ -27,7 +27,7 @@ jobs:
       - name: Log in to container registry
         uses: docker/login-action@v1
         with:
-          registry: docker.io
+          registry: xwang971reg.azurecr.io
           username: ${{ secrets.SCXJTEST_REGISTRY_USERNAME }}
           password: ${{ secrets.SCXJTEST_REGISTRY_PASSWORD }}
 
@@ -35,7 +35,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: 1078233028/sc-xj-test:${{ github.sha }}
+          tags: xwang971reg.azurecr.io/sc-xj-test:${{ github.sha }}
           file: ./Dockerfile
           context: ./
 
@@ -58,5 +58,5 @@ jobs:
             echo "Installing containerapp extension"
             az config set extension.use_dynamic_install=yes_without_prompt
             echo "Starting Deploying"
-            az containerapp registry set -n sc-xj-test -g workerapps-rg-xj --server docker.io --username  ${{ secrets.SCXJTEST_REGISTRY_USERNAME }} --password ${{ secrets.SCXJTEST_REGISTRY_PASSWORD }}
-            az containerapp update -n sc-xj-test -g workerapps-rg-xj --image 1078233028/sc-xj-test:${{ github.sha }}
+            az containerapp registry set -n sc-xj-test -g workerapps-rg-xj --server xwang971reg.azurecr.io --username  ${{ secrets.SCXJTEST_REGISTRY_USERNAME }} --password ${{ secrets.SCXJTEST_REGISTRY_PASSWORD }}
+            az containerapp update -n sc-xj-test -g workerapps-rg-xj --image xwang971reg.azurecr.io/sc-xj-test:${{ github.sha }}
