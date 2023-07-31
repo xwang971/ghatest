@@ -1,0 +1,42 @@
+name: Trigger auto deployment for logstreamingdemo
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ master ]
+    paths:
+    - '**'
+    - '.github/workflows/logstreamingdemo-AutoDeployTrigger-fd956260-6a26-4649-967b-9b845ec27a09.yml'
+
+  # Allow mannually trigger 
+  workflow_dispatch:
+      
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.LOGSTREAMINGDEMO_AZURE_CREDENTIALS }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }} 
+          registryUrl: xwang971reg.azurecr.io
+          registryUsername: ${{ secrets.LOGSTREAMINGDEMO_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.LOGSTREAMINGDEMO_REGISTRY_PASSWORD }}
+          containerAppName: logstreamingdemo
+          resourceGroup: workerapps-rg-xj
+          imageToBuild: xwang971reg.azurecr.io/logstreamingdemo:${{ github.sha }}
+          dockerfilePath: Dockerfile
+
+     
+
