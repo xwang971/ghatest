@@ -1,0 +1,42 @@
+name: Trigger auto deployment for eu2euapcapp
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ master ]
+    paths:
+    - '**'
+    - '.github/workflows/eu2euapcapp-AutoDeployTrigger-46cbe645-8ead-4b9d-b337-da44189b016c.yml'
+
+  # Allow mannually trigger 
+  workflow_dispatch:
+      
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.EU2EUAPCAPP_AZURE_CREDENTIALS }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }} 
+          registryUrl: xwang971reg.azurecr.io
+          registryUsername: ${{ secrets.EU2EUAPCAPP_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.EU2EUAPCAPP_REGISTRY_PASSWORD }}
+          containerAppName: eu2euapcapp
+          resourceGroup: workerapps-rg-xj
+          imageToBuild: xwang971reg.azurecr.io/eu2euapcapp:${{ github.sha }}
+          dockerfilePath: Dockerfile
+
+     
+
