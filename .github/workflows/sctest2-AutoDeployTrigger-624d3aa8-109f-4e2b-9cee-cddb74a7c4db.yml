@@ -1,0 +1,45 @@
+name: Trigger auto deployment for sctest2
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ master ]
+    paths:
+    - '//**'
+    - '.github/workflows/sctest2-AutoDeployTrigger-624d3aa8-109f-4e2b-9cee-cddb74a7c4db.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.SCTEST2_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.SCTEST2_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.SCTEST2_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }} 
+          registryUrl: xwang971reg.azurecr.io
+          registryUsername: ${{ secrets.SCTEST2_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.SCTEST2_REGISTRY_PASSWORD }}
+          containerAppName: sctest2
+          resourceGroup: workerapps-rg-xj
+          imageToBuild: xwang971reg.azurecr.io/sctest2:${{ github.sha }}
+          dockerfilePath: Dockerfile
+
+
